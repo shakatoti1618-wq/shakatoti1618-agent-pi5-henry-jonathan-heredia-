@@ -1,0 +1,22 @@
+# Dependencias
+node_modules/
+
+# Compilación
+dist/
+*.tsbuildinfo
+
+# Variables de entorno (¡NUNCA subir el token!)
+.env
+.env.local
+.env.*.local
+
+# Archivos de configuración locales del IDE / Antigravity con credenciales
+.mcp.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Sistema
+.DS_Store
+Thumbs.db
