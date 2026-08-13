@@ -134,8 +134,15 @@ export function fromOctokitError(err: unknown): AppError {
       status,
     );
   }
-
-  // 4) Resto: errores de la API de GitHub (404, 409, 422, ...).
+  // 3.5) Recurso no encontrado: 404 → mensaje específico, más útil que el genérico.
+  if (status === 404) {
+    return new GitHubAPIError(
+      `El recurso solicitado no existe o no es accesible. Verifica los datos enviados e intenta de nuevo.`,
+      err,
+      status,
+    );
+  }
+  // 4) Resto: errores de la API de GitHub (409, 422, ...).
   return new GitHubAPIError(
     `GitHub respondió con un error (${status}): ${apiMessage}`,
     err,
@@ -180,7 +187,7 @@ export async function withRetry<T>(operation: () => Promise<T>, options?: { retr
   const maxRetries = options?.retries ?? RETRY_CONFIG.maxRetries;
   let attempt = 0;
 
-  for (;;) {
+  for (; ;) {
     try {
       return await operation();
     } catch (err) {
